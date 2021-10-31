@@ -1,5 +1,5 @@
 // import packages
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // import components
 import { AddContactForm } from './components';
@@ -17,11 +17,18 @@ const testContacts = [
 ];
 
 function App() {
-  const [contacts, setContacts] = useState([...testContacts]);
+  // done get contacts from local storage on first load
+  const [contacts, setContacts] = useState(() => {
+    return (
+      JSON.parse(window.localStorage.getItem('contacts')) ?? [...testContacts]
+    );
+  });
   const [filter, setFilter] = useState('');
 
-  // todo save contacts to local storage on update
-  // todo get contacts from local storage on first upload
+  // done save contacts to local storage on update
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
   // done function to save data sent on contact form submit
   const formSubmitHandler = newContact => {
