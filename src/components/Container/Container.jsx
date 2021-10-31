@@ -1,7 +1,7 @@
-// import packages
+// package import
 import PropTypes from 'prop-types';
 
-// import styles
+// styles import
 import './Container.css';
 
 export function Container({ children }) {
@@ -9,5 +9,5 @@ export function Container({ children }) {
 }
 
 Container.propTypes = {
-  children: PropTypes.object.isRequired,
+  children: PropTypes.node.isRequired, //?? node
 };

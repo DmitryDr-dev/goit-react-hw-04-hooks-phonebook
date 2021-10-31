@@ -4,6 +4,9 @@ import { useState } from 'react';
 // import components
 import { AddContactForm } from './components';
 import { Container } from './components';
+import { Section } from './components';
+import { ContactList } from './components';
+import { Filter } from './components';
 
 // base contact list to test app
 const testContacts = [
@@ -15,9 +18,10 @@ const testContacts = [
 
 function App() {
   const [contacts, setContacts] = useState([...testContacts]);
+  const [filter, setFilter] = useState('');
 
-  // save contacts to local storage on update
-  // get contacts from local storage on first upload
+  // todo save contacts to local storage on update
+  // todo get contacts from local storage on first upload
 
   // done function to save data sent on contact form submit
   const formSubmitHandler = newContact => {
@@ -38,19 +42,45 @@ function App() {
     });
   };
 
-  // todo function to delete contact
-  const onDeleteContact = () => {};
+  // done function to delete contact
+  const onDeleteContact = toDeleteId => {
+    console.log(toDeleteId);
 
-  // todo function to track filter input changes
-  const onFilterChange = () => {};
+    return setContacts(contacts =>
+      contacts.filter(contact => {
+        return contact.id !== toDeleteId;
+      }),
+    );
+  };
 
-  // todo function to display filtered contacts
-  const getFilteredContacts = () => {};
+  // done function to track filter input changes
+  const onFilterChange = e => {
+    setFilter(e.target.value);
+    getFilteredContacts();
+  };
+
+  // done function to display filtered contacts
+  const getFilteredContacts = () => {
+    const normalizedFilter = filter.toLowerCase().trim();
+
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter),
+    );
+  };
 
   return (
     <Container>
-      <h1>Yor Contacts</h1>
-      <AddContactForm onSubmit={formSubmitHandler} />
+      <h1>Your Contacts</h1>
+      <Section>
+        <AddContactForm onSubmit={formSubmitHandler} />
+      </Section>
+      <Section title="Contact List">
+        <Filter value={filter} onFilterChange={onFilterChange} />
+        <ContactList
+          contacts={getFilteredContacts()}
+          deleteOnClick={onDeleteContact}
+        />
+      </Section>
     </Container>
   );
 }
