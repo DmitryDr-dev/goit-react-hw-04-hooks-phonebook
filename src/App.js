@@ -1,5 +1,5 @@
 // import packages
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 // import components
 import { AddContactForm } from './components';
@@ -63,17 +63,17 @@ function App() {
   // done function to track filter input changes
   const onFilterChange = e => {
     setFilter(e.target.value);
-    getFilteredContacts();
+    // getFilteredContacts();
   };
 
   // done function to display filtered contacts
-  const getFilteredContacts = () => {
+  const getFilteredContacts = useMemo(() => {
     const normalizedFilter = filter.toLowerCase().trim();
 
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter),
     );
-  };
+  }, [contacts, filter]);
 
   return (
     <Container>
@@ -84,7 +84,7 @@ function App() {
       <Section title="Contact List">
         <Filter value={filter} onFilterChange={onFilterChange} />
         <ContactList
-          contacts={getFilteredContacts()}
+          contacts={getFilteredContacts}
           deleteOnClick={onDeleteContact}
         />
       </Section>
