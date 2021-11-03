@@ -42,7 +42,9 @@ function App() {
           contact => contact.name.toLowerCase() === normalizedContact,
         )
       ) {
-        return alert(`${newContact.name} already exists!`);
+        alert(`${newContact.name} already exists!`);
+
+        return [...contacts];
       }
       // setting new contact to existing collection
       return [...contacts, newContact];
